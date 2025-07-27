@@ -7,14 +7,14 @@ const app = express();
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 
-const main = require('./config/dataBase');
-const redisClient = require('./config/redis');
+const main = require('./src/config/dataBase');
+const redisClient = require('./src/config/redis');
 
-const authRouter = require('./routes/authRoutes');
-const shopeRouter = require('./routes/shopRoutes');
-const userRouter = require('./routes/userRoutes');
-const adminRouter = require('./routes/adminRoutes');
-const {rateLimiter} = require("./middleware");
+const authRouter = require('./src/routes/authRoutes');
+const shopeRouter = require('./src/routes/shopRoutes');
+const userRouter = require('./src/routes/userRoutes');
+const adminRouter = require('./src/routes/adminRoutes');
+const {rateLimiter} = require("./src/middleware");
 
 const cors = require('cors');
 
