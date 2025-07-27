@@ -19,7 +19,7 @@ const {rateLimiter} = require("./src/middleware");
 const cors = require('cors');
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: 'https://bellespot.onrender.com',//http://localhost:5173 
   credentials: true
 }));
 
