@@ -15,10 +15,9 @@ const handleErrorResponse = (res, statusCode, message) => {
 const getCookieOptions = () => ({
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
+  sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'strict',
   path: '/',
-  maxAge: 60 * 60 * 1000, 
-  domain: process.env.NODE_ENV === 'production' ? 'bellespot.onrender.com' : undefined
+  maxAge: 60 * 60 * 1000
 });
 
 const register = async (req, res) => {
@@ -84,8 +83,15 @@ const login = async (req, res) => {
       { expiresIn: '1h' }
     );
     
+    const cookieOptions = getCookieOptions();
+    res.cookie('token', newToken, cookieOptions);
+    console.log('Login: Cookie set', {
+      token: newToken,
+      options: cookieOptions,
+      userId: user._id,
+      headers: res.getHeaders(), // Log response headers
+    });
 
-    res.cookie('token', newToken, getCookieOptions());
 
     return res.status(200).json({
       success: true,
@@ -98,7 +104,9 @@ const login = async (req, res) => {
       }
     });
 
+
   } catch (error) {
+    console.error('Login error:', error);
     return handleErrorResponse(res, 500, "Login failed: " + error.message);
   }
 };
@@ -208,6 +216,7 @@ const adminRegister = async (req, res) => {
 
 const checkAuth = async (req, res) => {
   try {
+    
     if (!req.result) {
       return handleErrorResponse(res, 401, "Not authenticated");
     }

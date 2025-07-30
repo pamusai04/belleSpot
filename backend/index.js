@@ -19,9 +19,11 @@ const {rateLimiter} = require("./src/middleware");
 const cors = require('cors');
 app.set('trust proxy', 1);
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? 'https://bellespot.onrender.com': 'http://localhost:5173',
-  // origin:'http://localhost:5173',
+  // origin: process.env.NODE_ENV === 'production' ? 'https://bellespot.onrender.com': 'http://localhost:5173',
+  origin:'http://localhost:5173',
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));

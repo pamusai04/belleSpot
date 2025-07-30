@@ -1,24 +1,30 @@
-import axios from "axios"; 
-
-const isBrowser = typeof window !== 'undefined'; 
+import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: isBrowser ? 'https://bellespots.onrender.com' : 'http://localhost:3000',
-  connectToDevTools: isBrowser,
-  ssrMode: !isBrowser,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  baseURL: process.env.NODE_ENV === 'production' ? 'https://bellespot.onrender.com' : 'http://localhost:3000',
+  withCredentials: true, 
+  timeout: 10000,
 });
 
+axiosClient.interceptors.request.use(
+  (config) => {
+    console.log('Axios request:', {
+      url: config.url,
+      method: config.method,
+      headers: config.headers,
+      cookies: document.cookie, 
+    });
+    return config;
+  },
+  (error) => {
+    
+    return Promise.reject(error);
+  }
+);
+
 axiosClient.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response && error.response.status === 401) {
-      const event = new CustomEvent('unauthorized');
-      window.dispatchEvent(event);
-    }
+  (response) => response,
+  (error) => {
     return Promise.reject(error);
   }
 );

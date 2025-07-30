@@ -36,11 +36,13 @@ function App() {
     const checkAuthAndHandleRateLimit = async () => {
       // Skip if already authenticated or auth check has run
       if (isAuthenticated || hasCheckedAuth.current) return;
-
+      
       hasCheckedAuth.current = true; // Mark auth check as done
       try {
+        console.log('Checking auth...');
         await checkAuthentication().unwrap();
       } catch (error) {
+        console.error('Auth check error:', error);
         if (error.status === 429) {
           const retryAfter = error.data?.retryAfter || 60;
           toast.error(`Too many requests. Please try again in ${retryAfter} seconds.`, {

@@ -43,7 +43,7 @@ const Home = () => {
     
     fetchUserLocation();
   }, [dispatch]);
-
+  
   // const { loading: filterLoading } = useSelector((state) => state.filter);
   const [currentTime, setCurrentTime] = useState(new Date());
 
