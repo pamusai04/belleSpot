@@ -12,6 +12,14 @@ const handleErrorResponse = (res, statusCode, message) => {
     error: message
   });
 };
+const getCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict',
+  path: '/',
+  maxAge: 60 * 60 * 1000, 
+  domain: process.env.NODE_ENV === 'production' ? 'bellespot.onrender.com' : undefined
+});
 
 const register = async (req, res) => {
   try {
@@ -36,13 +44,7 @@ const register = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.cookie('token', token, { 
-      maxAge: 60 * 60 * 1000, 
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'strict', 
-      path: '/' 
-    });
+    res.cookie('token', token, getCookieOptions());
     
     return res.status(201).json({
       success: true,
@@ -81,14 +83,9 @@ const login = async (req, res) => {
       process.env.JWT_KEY,
       { expiresIn: '1h' }
     );
+    
 
-    res.cookie('token', newToken, { 
-      maxAge: 60 * 60 * 1000, 
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'strict', 
-      path: '/' 
-    });
+    res.cookie('token', newToken, getCookieOptions());
 
     return res.status(200).json({
       success: true,
@@ -121,7 +118,7 @@ const logout = async (req, res) => {
     await redisClient.set(`token:${token}`, 'Blocked');
     await redisClient.expireAt(`token:${token}`, payload.exp);
     
-    res.clearCookie('token');
+    res.clearCookie('token', getCookieOptions());
     return res.status(200).json({
       success: true,
       message: "Logged out successfully"
@@ -154,13 +151,7 @@ const ServiceProviderRegister = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.cookie('token', token, { 
-      maxAge: 60 * 60 * 1000, 
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'strict', 
-      path: '/' 
-    });
+    res.cookie('token', token, getCookieOptions());
 
     return res.status(201).json({
       success: true,
@@ -199,13 +190,7 @@ const adminRegister = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.cookie('token', token, { 
-      maxAge: 60 * 60 * 1000, 
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'strict', 
-      path: '/' 
-    });
+    res.cookie('token', token, getCookieOptions());
 
     return res.status(201).json({
       success: true,

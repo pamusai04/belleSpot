@@ -17,11 +17,14 @@ const adminRouter = require('./src/routes/adminRoutes');
 const {rateLimiter} = require("./src/middleware");
 
 const cors = require('cors');
+app.set('trust proxy', 1);
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' ? 'https://bellespot.onrender.com': 'http://localhost:5173',
+  // origin:'http://localhost:5173',
+  credentials: true,
+};
 
-app.use(cors({
-  origin: 'https://bellespot.onrender.com',//http://localhost:5173 
-  credentials: true
-}));
+app.use(cors(corsOptions));
 
 
 app.use(express.json());

@@ -24,7 +24,8 @@ const SalonDetail = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [expandedCategories, setExpandedCategories] = useState({});
   const [showOffers, setShowOffers] = useState(false); // Offers closed by default
-  console.log(shops);
+
+  
   const handleAddToCart = async (service) => {
     try {
       addItemToCart({ shopName: card.shopName, serviceId: service._id });

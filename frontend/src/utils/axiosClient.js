@@ -1,8 +1,11 @@
-import axios from "axios";
+import axios from "axios"; 
+
+const isBrowser = typeof window !== 'undefined'; 
 
 const axiosClient = axios.create({
-  // baseURL: 'http://localhost:3000', 
-  baseURL:'https://bellespots.onrender.com',
+  baseURL: isBrowser ? 'https://bellespots.onrender.com' : 'http://localhost:3000',
+  connectToDevTools: isBrowser,
+  ssrMode: !isBrowser,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json'
@@ -13,7 +16,6 @@ axiosClient.interceptors.response.use(
   response => response,
   error => {
     if (error.response && error.response.status === 401) {
-      // Create custom event to trigger logout
       const event = new CustomEvent('unauthorized');
       window.dispatchEvent(event);
     }
