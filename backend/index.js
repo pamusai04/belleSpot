@@ -20,8 +20,8 @@ const cors = require('cors');
 app.set('trust proxy', 1);
 
 const allowedOrigins = [
-  'http://localhost:5173',
-  // 'https://bellespot.onrender.com'
+  // 'http://localhost:5173',
+  'https://bellespot.onrender.com'
 ];
 
 const corsOptions = {
