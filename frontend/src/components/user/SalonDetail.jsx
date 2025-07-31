@@ -31,44 +31,45 @@ const SalonDetail = () => {
       addItemToCart({ shopName: card.shopName, serviceId: service._id });
       toast.success(`Added ${service.name} to your cart`);
     } catch (error) {
-      console.error('Error adding to cart:', error);
+      
       toast.error('Failed to add to cart');
     }
   };
   
-  
   const handleRateShop = async (rating) => {
-    try {
-      const result =  rateShopAction({ shopId: card._id, rating });
-      
-      if (result?.payload?.success) {
-        setCard(prev => {
-          const existingIndex = prev.globalRating.ratings.findIndex(
-            r => r.userId === 'current-user'
-          );
-          
-          const updatedRatings = existingIndex >= 0 
-            ? prev.globalRating.ratings.map((r, i) => 
-                i === existingIndex ? { ...r, score: rating } : r
-              )
-            : [...prev.globalRating.ratings, { userId: 'current-user', score: rating }];
-          
-          return {
-            ...prev,
-            globalRating: {
-              ...prev.globalRating,
-              avg_rating: result.payload.averageRating,
-              ratings: updatedRatings,
-              ratingCount: updatedRatings.length
-            }
-          };
-        });
-      }
-    } catch (error) {
-      console.error('Error rating shop:', error);
-      toast.error('Failed to rate shop');
+  try {
+    const result = await rateShopAction({ shopId: card._id, rating });
+
+    if (result?.payload?.success) {
+      setCard(prev => {
+        const existingIndex = prev.globalRating.ratings.findIndex(
+          r => r.userId === 'current-user'
+        );
+
+        const updatedRatings = existingIndex >= 0 
+          ? prev.globalRating.ratings.map((r, i) => 
+              i === existingIndex ? { ...r, score: rating } : r
+            )
+          : [...prev.globalRating.ratings, { userId: 'current-user', score: rating }];
+
+        return {
+          ...prev,
+          globalRating: {
+            ...prev.globalRating,
+            avg_rating: result.payload.averageRating,
+            ratings: updatedRatings,
+            ratingCount: updatedRatings.length
+          }
+        };
+      });
+      toast.success("Rating saved successfully!");
+    } else {
+      toast.error('Failed to save rating');
     }
-  };
+  } catch (error) {
+    toast.error('Failed to rate shop');
+  }
+};
 
   useEffect(() => {
     const decodedSalonName = decodeURIComponent(salonName);
