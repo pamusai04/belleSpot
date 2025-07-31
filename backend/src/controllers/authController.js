@@ -4,21 +4,22 @@ const jwt = require('jsonwebtoken');
 const validateUserInput = require("../utils/validateUser");
 const redisClient = require('../config/redis');
 
-// Helper function for consistent error responses
-const handleErrorResponse = (res, statusCode, message) => {
+
+const handleErrorResponse = (res, statusCode, message = "Something went wrong") => {
   return res.status(statusCode).json({
     success: false,
-    message: message,
-    error: message
+    message,
   });
 };
+
 const getCookieOptions = () => ({
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
-  sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'strict',
+  sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
   path: '/',
   maxAge: 60 * 60 * 1000
 });
+
 
 const register = async (req, res) => {
   try {
@@ -101,7 +102,7 @@ const login = async (req, res) => {
 
 
   } catch (error) {
-    console.error('Login error:', error);
+    
     return handleErrorResponse(res, 500, "Login failed: " + error.message);
   }
 };
