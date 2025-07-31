@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoadingSpinner = () => {
+const LoadingSpinner=()=> {
   return (
     <div className="relative w-20 h-20 flex items-center justify-center">
       {/* Outer Ring Animation */}

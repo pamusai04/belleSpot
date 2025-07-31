@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useFilter } from '../../hooks/useFilter';
 import { useAuth } from '../../hooks/useAuth';
 import { useUser } from '../../hooks/useUser';
+import { toast } from 'react-toastify';
+
 const Header = () => {
   const { 
     activeButton, 
@@ -13,7 +15,7 @@ const Header = () => {
     removeDate
   } = useFilter();
   const {cart, profile} = useUser();
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const [showSearch, setShowSearch] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
@@ -30,14 +32,17 @@ const Header = () => {
   let totalServices = cart.reduce((sum, item) => sum + item.services.length, 0);
 
 
-  const handleLogout = () => {
-    logout();
+  
+  const handleLogout = async() => {
+    await logout();
     removeDate([]);
-    navigate('/login'); // Redirect to login page after logout
-    setShowProfileDropdown(false); // Close dropdown after logout
+    setShowProfileDropdown(false);
+    toast.success('Logged out successfully!');
+    setTimeout(() => navigate('/login'), 5000);
+
   };
 
-  // Mobile detection
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);

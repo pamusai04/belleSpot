@@ -4,36 +4,45 @@ const redisClient = require('../config/redis');
 
 const userMiddleware = async (req, res, next) => {
   try {
-    console.log('Middleware: Cookies received:', req.cookies); // Already present
     const { token } = req.cookies;
     if (!token) {
-      console.error('Middleware: No token in cookies', { url: req.url, headers: req.headers }); // Debug log
-      throw new Error("Token is not Present");
+      return res.status(401).json({
+        success: false,
+        message: "Please log in to continue.",
+      });
     }
+
     const payload = jwt.verify(token, process.env.JWT_KEY);
-    console.log('Middleware: Token payload:', payload); // Already present
     const { _id } = payload;
     if (!_id) {
-      console.error('Middleware: Invalid token payload', { payload }); // Debug log
-      throw new Error("Invalid token");
+      return res.status(401).json({
+        success: false,
+        message: "Authentication failed. Please try logging in again.",
+      });
     }
+
     const isBlocked = await redisClient.exists(`token:${token}`);
     if (isBlocked) {
-      console.error('Middleware: Token is blocked', { token }); // Debug log
-      throw new Error("Invalid Token");
+      return res.status(401).json({
+        success: false,
+        message: "Your session has expired. Please log in again.",
+      });
     }
+
     const result = await User.findById(_id);
     if (!result) {
-      console.error('Middleware: User not found', { userId: _id }); // Debug log
-      throw new Error("User Doesn't Exist");
+      return res.status(404).json({
+        success: false,
+        message: "User not found. Please register .",
+      });
     }
+
     req.result = result;
     next();
   } catch (err) {
-    console.error('Middleware error:', { message: err.message, url: req.url }); // Debug log
     res.status(401).json({
       success: false,
-      message: err.message || "Unauthorized",
+      message: "Please log in again.",
     });
   }
 };

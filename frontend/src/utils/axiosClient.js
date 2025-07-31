@@ -8,16 +8,10 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   (config) => {
-    console.log('Axios request:', {
-      url: config.url,
-      method: config.method,
-      headers: config.headers,
-      cookies: document.cookie, 
-    });
+    
     return config;
   },
   (error) => {
-    
     return Promise.reject(error);
   }
 );

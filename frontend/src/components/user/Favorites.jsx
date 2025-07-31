@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { calculateAverageRating } from '../../utils/ratingUtils';
 import { Venus, Mars } from 'lucide-react';
 import processCardData from '../../utils/processCardData';
-import LoadingSpinner from '../common/LoadingSpinner ';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 const Favorites = () => {
   const {

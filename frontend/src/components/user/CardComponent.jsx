@@ -37,7 +37,7 @@ const CardComponent = memo(({ card, activeButton }) => {
           src={card.shopImage || 'https://static.vecteezy.com/system/resources/previews/009/784/989/original/picture-icon-isolated-on-white-background-free-vector.jpg'}
           alt={card.shopName || 'Beauty Service'}
           className="w-full h-full object-cover"
-          loading="lazy"
+          
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
         <div className="absolute bottom-4 w-full flex items-center justify-between px-3">
@@ -121,7 +121,7 @@ const CardComponent = memo(({ card, activeButton }) => {
             className="h-7 mr-2"
             src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/dineout/rx-card/OFFER.png"
             alt="Offer"
-            loading="lazy"
+           
           />
           <span className={`${activeButton === 'male' ? 'text-purple-700' : 'text-pink-700'} text-sm font-medium truncate`}>
             {card.bestOffer?.description || 'No Offer Available'}

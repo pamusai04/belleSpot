@@ -1,4 +1,3 @@
-// hooks/useAuth.js
 import { useDispatch, useSelector } from 'react-redux';
 import {
   registerUser,
@@ -6,10 +5,9 @@ import {
   registerAdmin,
   loginUser,
   logoutUser,
-  checkAuth,
-  // clearError,
-  // clearSuccessMessage
-} from '../redux/slices/authThunks'; //../features/auth/authThunks
+  checkAuth
+ 
+} from '../redux/slices/authThunks';
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -24,12 +22,12 @@ export const useAuth = () => {
     successMessage: authState.successMessage,
 
     // Actions
-    register: (userData) => dispatch(registerUser(userData)),
-    registerProvider: (providerData) => dispatch(registerServiceProvider(providerData)),
-    registerAdmin: (adminData) => dispatch(registerAdmin(adminData)),
-    login: (credentials) => dispatch(loginUser(credentials)),
-    logout: () => dispatch(logoutUser()),
-    checkAuthentication: () => dispatch(checkAuth()),
+    register: async (userData) => await dispatch(registerUser(userData)).unwrap(),
+    registerProvider: async (providerData) => await dispatch(registerServiceProvider(providerData)).unwrap(),
+    registerAdmin: async (adminData) => await dispatch(registerAdmin(adminData)).unwrap(),
+    login: async (credentials) => await dispatch(loginUser(credentials)).unwrap(),
+    logout: async () => await dispatch(logoutUser()).unwrap(),
+    checkAuthentication: async () => await dispatch(checkAuth()).unwrap(),
     clearAuthError: () => dispatch(clearError()),
     clearAuthSuccessMessage: () => dispatch(clearSuccessMessage()),
 

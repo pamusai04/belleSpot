@@ -18,7 +18,7 @@ const signupSchema = z.object({
 });
 
 function Signup() {
-  const { register: authRegister, registerProvider } = useAuth(); // Renamed to avoid conflict
+  const { register: authRegister, registerProvider , clearAuthError} = useAuth(); // Renamed to avoid conflict
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('user');
   const navigate = useNavigate();
@@ -26,35 +26,34 @@ function Signup() {
 
   const { register,  handleSubmit, formState: { errors }, reset} = useForm({ resolver: zodResolver(signupSchema)});
 
-  useEffect(() => {
-    if (isAuthenticated && successMessage) {
-      toast.success(successMessage);
-      const timer = setTimeout(() => {
-        navigate('/');
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-    
-    if (error) {
-      toast.error(error);
-    }
-  }, [isAuthenticated, error, successMessage, navigate]);
+ useEffect(() => {
+  if (error) {
+    const message = typeof error === 'string' ? error : error.message || 'Something went wrong';
+    toast.dismiss();
+    toast.error(message, { autoClose: 3000 });
 
-  useEffect(() => {
-      if (error) {
-        toast.error(error.message || 'Registration failed');
-      }
-      if (successMessage) {
-          toast.success(successMessage);
-      }
-  }, [error, successMessage]);
+    // Clear error from Redux to prevent repeated toasts
+    setTimeout(() => {
+      clearAuthError();
+    }, 100); 
+  }
 
+  if (isAuthenticated && successMessage) {
+    toast.dismiss();
+    toast.success(successMessage, {
+      autoClose: 2000,
+      onClose: () => navigate('/')
+    });
+  }
+}, [error, successMessage, isAuthenticated, navigate, clearAuthError]);
+
+  
   const onSubmit = async (data) => {
       try {
           if (role === 'user') {
-              authRegister(data);
+            await  authRegister(data);
           } else {
-              registerProvider(data);
+            await  registerProvider(data);
           }
           reset();
       } catch (err) {
@@ -224,7 +223,7 @@ function Signup() {
           </div>
         </div>
       </div>
-      <ToastContainer position="top-right" autoClose={3000} />
+      
     </div>
   );
 }

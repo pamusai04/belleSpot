@@ -8,6 +8,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { clearError } from '../../redux/slices/authSlice';
 import { Eye, EyeOff } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const loginSchema = z.object({
   emailId: z.string().email("Invalid Email"),
@@ -36,17 +37,16 @@ function Login() {
   }, [isAuthenticated, navigate]);
 
   const onSubmit = async (data) => {
-    try {
-      setLocalLoading(true);
-       login(data);
-    } catch (err) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Login error:', err);
-      }
-    } finally {
-      setLocalLoading(false);
-    }
-  };
+  try {
+    setLocalLoading(true);
+    await login(data);
+    toast.success('Login successful!'); 
+  } catch (err) {
+    toast.error(err || 'Login failed');
+  } finally {
+    setLocalLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-base-200">

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllUsers, fetchAllShops } from '../../redux/slices/adminSlice';
 import { Pagination } from '@mui/material';
-import LoadingSpinner from "../common/LoadingSpinner ";
+import LoadingSpinner from "../common/LoadingSpinner";
 const AdminDashboard = () => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('users');

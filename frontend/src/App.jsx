@@ -15,7 +15,7 @@ import UserProfile from './components/user/UserProfile';
 import Cart from './components/user/Cart';
 import Location from './components/user/Location';
 import SalonDetail from './components/user/SalonDetail';
-import LoadingSpinner from './components/common/LoadingSpinner ';
+import LoadingSpinner from './components/common/LoadingSpinner';
 import ProviderDashboard from './components/service-provider/ProviderDashboard';
 import AdminDashboard from './components/admin/AdminDashboard';
 import Header from './components/common/Header';
@@ -25,24 +25,25 @@ import CreateShop from './components/service-provider/CreateShop';
 import ManageShop from './components/service-provider/ManageShop';
 import ViewShop from './components/service-provider/ViewShop';
 import ManageOffers from './components/service-provider/ManageOffers';
+import { clearSuccessMessage } from './redux/slices/authSlice';
 
 function App() {
   const dispatch = useDispatch();
   const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
   const { checkAuthentication } = useAuth();
-  const hasCheckedAuth = useRef(false); // Track if auth check has run
+  const hasCheckedAuth = useRef(false); 
 
   useEffect(() => {
     const checkAuthAndHandleRateLimit = async () => {
-      // Skip if already authenticated or auth check has run
+      
       if (isAuthenticated || hasCheckedAuth.current) return;
       
-      hasCheckedAuth.current = true; // Mark auth check as done
+      hasCheckedAuth.current = true; 
       try {
-        console.log('Checking auth...');
-        await checkAuthentication().unwrap();
+        
+         checkAuthentication().unwrap();
       } catch (error) {
-        console.error('Auth check error:', error);
+        
         if (error.status === 429) {
           const retryAfter = error.data?.retryAfter || 60;
           toast.error(`Too many requests. Please try again in ${retryAfter} seconds.`, {
@@ -53,8 +54,7 @@ function App() {
             closeOnClick: false,
           });
         } else if (error.status !== 401) {
-          // Only show toast for non-401 errors
-          toast.error(error.data?.error || 'Authentication check failed', {
+         toast.error(error.data?.error || 'Authentication check failed', {
             autoClose: 3000,
             position: 'top-center',
           });
@@ -64,6 +64,12 @@ function App() {
 
     checkAuthAndHandleRateLimit();
   }, [checkAuthentication, isAuthenticated]); 
+
+  useEffect(() => {
+    if (window.location.pathname === '/login' || window.location.pathname === '/signup') {
+      dispatch(clearSuccessMessage());
+    }
+  }, [dispatch]);
 
   const getHomePath = () => {
     if (!isAuthenticated) return '/login';
@@ -183,7 +189,7 @@ function App() {
       </Routes>
 
       <ToastContainer
-        position="top-center"
+        position="top-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}

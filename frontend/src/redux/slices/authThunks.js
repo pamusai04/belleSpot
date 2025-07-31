@@ -122,9 +122,11 @@ export const loginUser = createAsyncThunk(
       if (!response.data.success || !response.data.user) {
         throw new Error(response.data.message || 'Invalid response from server');
       }
+      
       return response.data.user;
     } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+      console.log(error.response?.data?.message || 'Login failed');
+      return rejectWithValue(error.response?.data?.message || 'Login failed');
     }
   }
 );

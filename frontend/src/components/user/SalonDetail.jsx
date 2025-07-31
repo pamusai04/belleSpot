@@ -157,7 +157,7 @@ const SalonDetail = () => {
               src={card.shopImage || 'https://static.vecteezy.com/system/resources/previews/009/784/989/original/picture-icon-isolated-on-white-background-free-vector.jpg'}
               alt={card.shopName}
               className="w-full h-full object-cover"
-              loading="lazy"
+              
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
             <div className="absolute bottom-4 left-4 right-4">
@@ -295,7 +295,7 @@ const SalonDetail = () => {
                                   src={subService.serviceImage}
                                   alt={subService.name}
                                   className="w-full h-full object-cover rounded"
-                                  loading="lazy"
+                                  
                                 />
                               ) : (
                                 <ImageIcon className="w-8 h-8 text-gray-400" />

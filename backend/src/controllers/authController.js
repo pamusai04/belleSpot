@@ -61,6 +61,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    
     const { emailId, password } = req.body;
     
     if (!emailId || !password) {
@@ -72,11 +73,12 @@ const login = async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return handleErrorResponse(res, 401, "Invalid credentials");
     }
+    
 
     const cart_length = user?.cart?.reduce((total, item) => {
       return total + (item.services?.length || 0);
     }, 0);
-
+    
     const newToken = jwt.sign(
       { _id: user._id, emailId: user.emailId, role: user.role },
       process.env.JWT_KEY,
@@ -85,14 +87,7 @@ const login = async (req, res) => {
     
     const cookieOptions = getCookieOptions();
     res.cookie('token', newToken, cookieOptions);
-    console.log('Login: Cookie set', {
-      token: newToken,
-      options: cookieOptions,
-      userId: user._id,
-      headers: res.getHeaders(), // Log response headers
-    });
-
-
+    
     return res.status(200).json({
       success: true,
       message: "Login successful",
@@ -108,6 +103,30 @@ const login = async (req, res) => {
   } catch (error) {
     console.error('Login error:', error);
     return handleErrorResponse(res, 500, "Login failed: " + error.message);
+  }
+};
+const checkAuth = async (req, res) => {
+  try {
+    
+    if (!req.result) {
+      return handleErrorResponse(res, 401, "Not authenticated");
+    }
+    
+    const cart_length = req.result?.cart?.reduce((total, item) => {
+      return total + (item.services?.length || 0);
+    }, 0);
+    
+    return res.status(200).json({
+      success: true,
+      user: {
+        firstName: req.result?.firstName,
+        role: req.result?.role,
+        cart_length: cart_length,
+        profilePhoto:req.result?.profilePhoto?.url
+      }
+    });
+  } catch (error) {
+    return handleErrorResponse(res, 500, "Please log in to continue");
   }
 };
 
@@ -214,30 +233,7 @@ const adminRegister = async (req, res) => {
   }
 };
 
-const checkAuth = async (req, res) => {
-  try {
-    
-    if (!req.result) {
-      return handleErrorResponse(res, 401, "Not authenticated");
-    }
-    
-    const cart_length = req.result?.cart?.reduce((total, item) => {
-      return total + (item.services?.length || 0);
-    }, 0);
-    
-    return res.status(200).json({
-      success: true,
-      user: {
-        firstName: req.result?.firstName,
-        role: req.result?.role,
-        cart_length: cart_length,
-        profilePhoto:req.result?.profilePhoto?.url
-      }
-    });
-  } catch (error) {
-    return handleErrorResponse(res, 500, "Please log in to continue");
-  }
-};
+
 
 module.exports = { 
   register, 

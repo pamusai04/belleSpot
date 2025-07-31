@@ -1,11 +1,13 @@
 
 import { useState } from 'react';
 import { Heart, Filter, LogOut, HousePlus } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+ 
 import { useFilter } from '../../hooks/useFilter';
 import { useAuth } from '../../hooks/useAuth';
+import { toast } from 'react-toastify';
+
 
 const Sidebar = () => {
   const {
@@ -20,17 +22,21 @@ const Sidebar = () => {
   const { loading } = useSelector((state) => state.filter);
   const { logout } = useAuth();
   const [showFilters, setShowFilters] = useState(false);
-
-  const handleLogout = () => {
-    logout();
+  const navigate = useNavigate();
+  
+  const handleLogout = async() => {
+    await logout();
     removeDate([]);
+    toast.success('Logged out successfully!');
+    navigate('/login')
   };
 
-  // Helper to handle filter change and apply filters
+
   const handleGenderFilter = (filter) => {
     handleFilterChange(filter);
     applyFilters(); 
   };
+
   return (
     <div className="hidden md:block fixed top-0 left-0 h-full bg-gray-200 text-gray-600 w-64 z-40 pt-16 cursor-pointer">
       <div className="flex flex-col items-start pt-6 space-y-6 px-4 h-full">

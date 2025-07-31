@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import CardComponent from './CardComponent';
 import { useFilter } from '../../hooks/useFilter';
 import processCardData from '../../utils/processCardData';
-import LoadingSpinner from '../common/LoadingSpinner ';
+import LoadingSpinner from '../common/LoadingSpinner';
 import { getCurrentLocation } from '../map/MapUtils';
 import { setUserLocation } from '../../features/filter/filterSlice';
 import { useDispatch } from 'react-redux';
@@ -130,7 +130,7 @@ const Home = () => {
                       src="https://png.pngtree.com/png-vector/20211028/ourlarge/pngtree-today-offer-with-free-vector-png-image_4012911.png"
                       alt="Beauty Service"
                       className="h-full w-full object-cover"
-                      loading="lazy"
+                      
                     />
                   </div>
                   <div className="border-l border-dashed border-gray-400 h-16 mx-3 flex-shrink-0"></div>

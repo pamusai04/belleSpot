@@ -34,7 +34,7 @@ const authSlice = createSlice({
       state.loginAttempts = 0;
       state.isLocked = false;
     },
-    logout: (state) => { // Add logout reducer
+    logout: (state) => { 
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
@@ -53,7 +53,7 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || 'Registration failed';
+        state.error = action.payload?.message || 'Registration failed';
       })
 
       .addCase(registerServiceProvider.fulfilled, (state, action) => {
@@ -87,7 +87,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload ;
         state.isAuthenticated = true;
         state.error = null;
         state.loginAttempts = 0; // Reset on successful login

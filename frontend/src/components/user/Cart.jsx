@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useUser } from '../../hooks/useUser';
 import { Link } from 'react-router-dom';
-import { Trash2, ChevronRight, Plus, Minus } from 'lucide-react';
+import { Trash2, ChevronRight } from 'lucide-react';
 import { toast } from 'react-toastify';
-import LoadingSpinner from '../common/LoadingSpinner ';
+import LoadingSpinner from '../common/LoadingSpinner';
 import { ShoppingCart, Image } from 'lucide-react';
 
 const Cart = () => {
