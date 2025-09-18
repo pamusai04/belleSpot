@@ -22,7 +22,7 @@ app.set('trust proxy', 1);
 const allowedOrigins = [
   'https://bellespot.onrender.com',
   'http://localhost:5173',
-  'https://bellespots.onrender.com'
+  // 'https://bellespots.onrender.com'
   
 ];
 
