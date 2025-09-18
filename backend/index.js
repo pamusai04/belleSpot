@@ -21,6 +21,7 @@ app.set('trust proxy', 1);
 
 const allowedOrigins = [
   'https://bellespot.onrender.com'
+  
 ];
 
 const corsOptions = {
@@ -63,9 +64,10 @@ const initializeConnections = async () => {
   } catch (redisError) {
     console.error("❌ Redis connection failed:", redisError);
   }
-
+  
   app.listen(process.env.PORT, () => {
     console.log(`🚀 Server running on port ${process.env.PORT}`);
+    
   });
 };
 initializeConnections();
