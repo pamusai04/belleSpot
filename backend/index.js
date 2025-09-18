@@ -21,7 +21,6 @@ app.set('trust proxy', 1);
 
 const allowedOrigins = [
   'https://bellespot.onrender.com'
-  
 ];
 
 const corsOptions = {

@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const axiosClient = axios.create({
   baseURL: 'https://bellespots.onrender.com',
-  
   withCredentials: true, 
   timeout: 10000,
 });
