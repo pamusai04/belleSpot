@@ -2,26 +2,20 @@ import axios from 'axios';
 
 const axiosClient = axios.create({
   baseURL: 'https://bellespots.onrender.com',
-  // baseURL : 'https://bellespot.onrender.com',
-  // baseURL:'http://localhost:3000',
+  // baseURL: 'https://bellespot.onrender.com',
+  // baseURL: 'http://localhost:3000',
   withCredentials: true, 
-  timeout: 30000,
+  timeout: 0, 
 });
 
 axiosClient.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (config) => config,
+  (error) => Promise.reject(error)
 );
 
 axiosClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export default axiosClient;
