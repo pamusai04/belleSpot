@@ -5,7 +5,7 @@ const axiosClient = axios.create({
   // baseURL : 'https://bellespot.onrender.com',
   // baseURL:'http://localhost:3000',
   withCredentials: true, 
-  timeout: 10000,
+  timeout: 30000,
 });
 
 axiosClient.interceptors.request.use(
