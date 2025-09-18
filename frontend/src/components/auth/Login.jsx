@@ -26,11 +26,9 @@ function Login() {
   });
   const { login } = useAuth();
 
- useEffect(() => {
-  return () => {
+  useEffect(() => {
     dispatch(clearError());
-  };
-}, [dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isAuthenticated) {
